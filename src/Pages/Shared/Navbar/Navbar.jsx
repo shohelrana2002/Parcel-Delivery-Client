@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import ProFastLogo from "../ProFastLogo/ProFastLogo";
 const Navbar = () => {
   const navItems = (
@@ -82,8 +82,13 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal gap-2 px-1"> {navItems}</ul>
       </div>
-      <div className="navbar-end">
-        <a className="btn">Button</a>
+      <div className="navbar-end  gap-x-2">
+        <Link to="/signin" className="btn">
+          Sign In
+        </Link>
+        <Link to="/signup" className="btn btn-outline">
+          Sign Up
+        </Link>
       </div>
     </div>
   );
