@@ -1,6 +1,13 @@
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import ProFastLogo from "../ProFastLogo/ProFastLogo";
+import useAuth from "../../../Hooks/useAuth";
 const Navbar = () => {
+  const { user, handleLogOut } = useAuth();
+  const navigate = useNavigate();
+  const handleLogOutNav = async () => {
+    await handleLogOut();
+    navigate("/login");
+  };
   const navItems = (
     <>
       <li>
@@ -83,12 +90,18 @@ const Navbar = () => {
         <ul className="menu menu-horizontal gap-2 px-1"> {navItems}</ul>
       </div>
       <div className="navbar-end  gap-x-2">
-        <Link to="/signin" className="btn">
-          Sign In
-        </Link>
-        <Link to="/signup" className="btn btn-outline">
-          Sign Up
-        </Link>
+        {user ? (
+          <button onClick={handleLogOutNav}>Logout</button>
+        ) : (
+          <>
+            <Link to="/login" className="btn">
+              Sign In
+            </Link>
+            <Link to="/register" className="btn btn-outline">
+              Sign Up
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,13 +1,14 @@
+import { Link } from "react-router";
 import logo from "../../../assets/logo.png";
 
 const ProFastLogo = () => {
   return (
-    <div className=" flex cursor-pointer items-end text-xl">
+    <Link to="/" className=" flex cursor-pointer items-end text-xl">
       <img src={logo} alt={logo} />
       <span className="text-orange-600 md:font-extrabold md:-ml-3">
         fast Service
       </span>
-    </div>
+    </Link>
   );
 };
 
