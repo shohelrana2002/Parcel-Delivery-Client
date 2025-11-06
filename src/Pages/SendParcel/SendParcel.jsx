@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import useAuth from "../../Hooks/useAuth";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 // generate token tracking
 const generateTrackingNumber = () => {
   const now = new Date();
@@ -127,7 +128,7 @@ const SendParcel = () => {
 
     return cost;
   };
-
+  const axiosSecure = useAxiosSecure();
   const onSubmit = (data) => {
     const cost = calculateCost(data);
     const created_by = user?.email;
@@ -163,12 +164,15 @@ const SendParcel = () => {
           creation_date,
           trackingNumber,
         };
-        console.log("Saved Parcel:", parcelData);
-        Swal.fire("Success!", "Parcel Confirm .", "success");
+        axiosSecure.post("/parcels", parcelData).then((res) => {
+          if (res.data?.insertedId) {
+            console.log(res.data);
+            Swal.fire("Success!", "Parcel Confirm .", "success");
+          }
+        });
       }
     });
   };
-
   return (
     <div className="container mx-auto p-5 shadow-lg rounded-lg bg-white">
       <h2 className="text-2xl font-bold mb-2 text-center">Send Parcel</h2>
