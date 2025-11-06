@@ -42,7 +42,7 @@ const Navbar = () => {
 
       <li>
         <NavLink
-          to="/contact"
+          to="/sendParcel"
           className={({ isActive }) =>
             `px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
               isActive
@@ -51,7 +51,7 @@ const Navbar = () => {
             }`
           }
         >
-          Contact
+          Send Parcel
         </NavLink>
       </li>
     </>
