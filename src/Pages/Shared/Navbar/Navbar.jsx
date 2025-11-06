@@ -27,7 +27,7 @@ const Navbar = () => {
 
       <li>
         <NavLink
-          to="/about"
+          to="/coverage"
           className={({ isActive }) =>
             `px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
               isActive
@@ -36,7 +36,7 @@ const Navbar = () => {
             }`
           }
         >
-          About
+          Coverage
         </NavLink>
       </li>
 

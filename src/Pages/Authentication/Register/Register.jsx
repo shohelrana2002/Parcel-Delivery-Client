@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import toast from "react-hot-toast";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -173,6 +174,7 @@ const Register = () => {
             Login
           </Link>
         </p>
+        <SocialLogin />
       </div>
     </div>
   );

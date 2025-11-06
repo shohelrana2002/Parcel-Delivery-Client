@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import toast from "react-hot-toast";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Login = () => {
   const {
@@ -124,7 +125,6 @@ const Login = () => {
               ))}
             </ul>
           )}
-
           {/* Submit Button */}
           <button
             type="submit"
@@ -145,6 +145,7 @@ const Login = () => {
           </Link>
           Now
         </p>
+        <SocialLogin />
       </div>
     </div>
   );
