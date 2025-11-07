@@ -1,13 +1,14 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../Shared/Loader/Loader";
 import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
 
 const PaymentForm = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const stripe = useStripe();
@@ -36,6 +37,7 @@ const PaymentForm = () => {
     if (card === null) {
       return;
     }
+    // eslint-disable-next-line no-unused-vars
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card,
@@ -62,11 +64,25 @@ const PaymentForm = () => {
       if (result.error) {
         setErrorMessage(error.message);
       } else if (result?.paymentIntent?.status === "succeeded") {
-        toast.success(" Payment Successful!");
         setErrorMessage("");
+        // save to data
+        const paymentData = {
+          parcelId,
+          email: user.email,
+          amount: parcelInfo?.cost,
+          transitionId: result.paymentIntent.id,
+          paymentMethod: result.paymentIntent.payment_method_types,
+          paid_at_string: new Date().toISOString(),
+          paid_at: new Date(),
+        };
+        const paymentRes = await axiosSecure.post("/payments", paymentData);
+        if (paymentRes.data?.insertedId) {
+          toast.success(" Payment Successful!");
+          navigate("/dashboard/myParcels");
+        }
       }
-      console.log("paymentMethod", paymentMethod);
-      console.log("frontend data send", result);
+      //   console.log("paymentMethod", paymentMethod);
+      //   console.log("frontend data send", result);
       setErrorMessage("");
     }
   };

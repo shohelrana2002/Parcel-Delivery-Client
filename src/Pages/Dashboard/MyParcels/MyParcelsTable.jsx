@@ -76,6 +76,7 @@ const MyParcelsTable = ({
                     </button>
                     {parcel.paymentStatus !== "paid" && (
                       <button
+                        disabled={parcel.payment_status === "paid"}
                         onClick={() => handlePay(parcel._id)}
                         className="btn btn-xs btn-success text-white"
                       >
