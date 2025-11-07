@@ -7,8 +7,10 @@ import Register from "../Pages/Authentication/Register/Register";
 import Coverage from "../Pages/Coverage/Coverage";
 import SendParcel from "../Pages/SendParcel/SendParcel";
 import DashboardLayout from "../Layouts/DashboardLayout";
-import MyParcels from "../Pages/Dashboard/MyParcels";
-import UserProfile from "../Pages/Dashboard/UserProfile";
+import PrivateRoute from "../Routes/PrivateRoute";
+import MyParcels from "../Pages/Dashboard/MyParcels/MyParcels";
+import UserProfile from "../Pages/Dashboard/UserProfile/UserProfile";
+import Payment from "../Pages/Dashboard/Payment/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +27,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/sendParcel",
-        element: <SendParcel />,
+        element: (
+          <PrivateRoute>
+            <SendParcel />
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -44,16 +50,28 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/",
-    element: <DashboardLayout />,
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
-        path: "dashboard",
+        index: true,
+        element: <UserProfile />,
+      },
+      {
+        path: "myProfile",
         element: <UserProfile />,
       },
       {
         path: "myParcels",
         element: <MyParcels />,
+      },
+      {
+        path: "payment/:parcelId",
+        element: <Payment />,
       },
     ],
   },

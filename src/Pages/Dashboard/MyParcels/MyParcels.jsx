@@ -1,12 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import useAuth from "../../Hooks/useAuth";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import Loader from "../Shared/Loader/Loader";
-import MyParcelsTable from "./MyParcelsTable";
+
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import MyParcelsTable from "./MyParcelsTable";
+import useAuth from "../../../Hooks/useAuth";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import Loader from "../../Shared/Loader/Loader";
+import { useNavigate } from "react-router";
 
 const MyParcels = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const {
@@ -53,7 +56,7 @@ const MyParcels = () => {
   };
 
   const handlePay = (id) => {
-    console.log("Pay:", id);
+    navigate(`/dashboard/payment/${id}`);
   };
 
   const handleDetails = (id) => {

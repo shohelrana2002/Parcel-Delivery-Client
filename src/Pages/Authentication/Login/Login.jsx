@@ -1,29 +1,37 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import { useState } from "react";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
+  const location = useLocation();
+  const from = location?.state?.from || "/";
   const navigate = useNavigate();
   const password = watch("password", "");
   const { handleLoginAuth } = useAuth();
   const handleLogin = async (data) => {
-    const fetch = await handleLoginAuth(data.email, data.password);
+    setLoading(true);
     try {
+      const fetch = await handleLoginAuth(data.email, data.password);
       if (!fetch.user.emailVerified) {
-        return toast.err("plz verified your gmail");
+        return toast.error("plz verified your gmail");
       }
       toast.success("login successfully");
-      navigate("/");
+      navigate(from);
     } catch (err) {
+      setLoading(false);
       toast.error(err?.message);
+    } finally {
+      setLoading(false);
     }
   };
   const conditions = [
@@ -130,7 +138,7 @@ const Login = () => {
             type="submit"
             className="btn w-full bg-secondary text-primary"
           >
-            Login
+            {loading ? "Loading..." : "Login"}
           </button>
         </form>
 

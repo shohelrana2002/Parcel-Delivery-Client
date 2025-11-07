@@ -1,29 +1,31 @@
 import React, { useState } from "react";
 import { Menu } from "lucide-react";
 import { IoClose } from "react-icons/io5";
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, useLocation } from "react-router";
 import ProFastLogo from "../Pages/Shared/ProFastLogo/ProFastLogo";
 
 const DashboardLayout = () => {
+  const location = useLocation();
   const navItems = (
     <>
       <li>
         <NavLink
-          to="dashboard"
+          to="myProfile"
           className={({ isActive }) =>
             `block px-3 py-3 text-center rounded-lg font-medium transition-all duration-300 shadow ${
-              isActive
+              isActive || location?.pathname === "/dashboard"
                 ? "bg-green-600 text-white shadow-lg scale-105"
                 : "bg-white text-gray-700 hover:bg-blue-100 hover:text-blue-600"
             }`
           }
         >
-          Dashboard
+          My Profile
         </NavLink>
       </li>
+
       <li>
         <NavLink
-          to="MyParcels"
+          to="myParcels"
           className={({ isActive }) =>
             `block px-3 py-3 text-center rounded-lg font-medium transition-all duration-300 shadow ${
               isActive

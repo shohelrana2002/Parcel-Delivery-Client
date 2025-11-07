@@ -2,7 +2,7 @@ import React from "react";
 
 const UserProfile = () => {
   return (
-    <div>
+    <div className="px-3 py-3">
       <p>Profile</p>
     </div>
   );
