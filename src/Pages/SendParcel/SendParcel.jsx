@@ -166,7 +166,6 @@ const SendParcel = () => {
         };
         axiosSecure.post("/parcels", parcelData).then((res) => {
           if (res.data?.insertedId) {
-            console.log(res.data);
             Swal.fire("Success!", "Parcel Confirm .", "success");
           }
         });
