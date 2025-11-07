@@ -4,8 +4,11 @@ import React, { useState } from "react";
 import { useParams } from "react-router";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../Shared/Loader/Loader";
+import toast from "react-hot-toast";
+import useAuth from "../../../Hooks/useAuth";
 
 const PaymentForm = () => {
+  const { user } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const stripe = useStripe();
   const elements = useElements();
@@ -41,10 +44,33 @@ const PaymentForm = () => {
       console.log("[error]", error.message);
       setErrorMessage(error?.message);
     } else {
-      console.log("[PaymentMethod]", paymentMethod);
+      //   now backend call here
+      const res = await axiosSecure.post("/create-payment-intent", {
+        amount: parcelInfo?.cost,
+        parcelId,
+      });
+      const clientSecret = res.data?.clientSecret;
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            name: user.displayName,
+            email: user.email,
+          },
+        },
+      });
+      if (result.error) {
+        setErrorMessage(error.message);
+      } else if (result?.paymentIntent?.status === "succeeded") {
+        toast.success(" Payment Successful!");
+        setErrorMessage("");
+      }
+      console.log("paymentMethod", paymentMethod);
+      console.log("frontend data send", result);
       setErrorMessage("");
     }
   };
+
   if (isError)
     return (
       <p className="text-red-500 text-center mt-5">
@@ -94,10 +120,8 @@ const PaymentForm = () => {
       >
         Pay Now <span className=""> {parcelInfo?.cost} Taka</span>
       </button>
-      {errorMessage ? (
+      {errorMessage && (
         <p className="text-center text-red-500">{errorMessage}</p>
-      ) : (
-        ""
       )}
       <p className="text-xs text-center text-gray-400 mt-3">
         🔒 Your payment information is encrypted and secure.
