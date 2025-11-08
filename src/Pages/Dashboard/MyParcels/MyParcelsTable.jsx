@@ -7,7 +7,7 @@ const MyParcelsTable = ({
   console.log(parcels);
 
   return (
-    <div className="overflow-x-auto bg-white shadow-lg rounded-xl mt-6">
+    <div className="overflow-x-auto mx-auto bg-white shadow-lg rounded-xl mt-6">
       <table className="table table-zebra w-full">
         {/* Table Head */}
         <thead className="bg-blue-600 text-white text-sm">
@@ -16,11 +16,11 @@ const MyParcelsTable = ({
             <th>Tracking</th>
             <th>Sender</th>
             <th>Address</th>
-            <th>Contact</th>
+            {/* <th>Contact</th> */}
             <th>District</th>
             <th>Upazila</th>
             <th>Type</th>
-            <th>Taka</th>
+            <th>Taka (৳)</th>
             <th>Status</th>
             <th className="text-center">Actions</th>
           </tr>
@@ -40,7 +40,7 @@ const MyParcelsTable = ({
                 </td>
                 <td>{parcel.senderName}</td>
                 <td>{parcel.senderAddress}</td>
-                <td>{parcel.senderContact}</td>
+                {/* <td>{parcel.senderContact}</td> */}
                 <td>{parcel.senderDistrict}</td>
                 <td>{parcel.senderUpazila}</td>
                 <td>
@@ -50,7 +50,7 @@ const MyParcelsTable = ({
                 </td>
                 <td className="text-blue-800 font-semibold">
                   {parcel.cost}
-                  <span className="text-red-400">Taka</span>
+                  <span className="text-red-400">৳</span>
                 </td>
                 {/* Payment Status */}
                 <td>
@@ -80,7 +80,7 @@ const MyParcelsTable = ({
                         onClick={() => handlePay(parcel._id)}
                         className="btn btn-xs btn-success text-white"
                       >
-                        Pay
+                        Pay ৳
                       </button>
                     )}
                     <button

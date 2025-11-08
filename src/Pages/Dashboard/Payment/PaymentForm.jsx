@@ -134,7 +134,7 @@ const PaymentForm = () => {
         disabled={!stripe}
         className="btn w-full text-secondary btn-primary"
       >
-        Pay Now <span className=""> {parcelInfo?.cost} Taka</span>
+        Pay Now <span className=""> {parcelInfo?.cost} ৳</span>
       </button>
       {errorMessage && (
         <p className="text-center text-red-500">{errorMessage}</p>

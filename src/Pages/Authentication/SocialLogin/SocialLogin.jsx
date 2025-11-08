@@ -27,6 +27,7 @@ const SocialLogin = () => {
     <div className="flex justify-center flex-col items-center">
       <h4 className="text-xl font-semibold">Or</h4>
       <button
+        disabled={loading === true}
         onClick={handleGoogleLogin}
         className="flex text-xl btn btn-outline items-center gap-x-2"
       >
