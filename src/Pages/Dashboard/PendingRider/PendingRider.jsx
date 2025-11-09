@@ -25,7 +25,7 @@ const PendingRider = () => {
   });
 
   // Action: Activate Rider
-  const handleActivate = async (id) => {
+  const handleActivate = async (id, email) => {
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
@@ -37,7 +37,7 @@ const PendingRider = () => {
       });
 
       if (result.isConfirmed) {
-        await axiosSecure.patch(`/riders/${id}`, { status: "active" });
+        await axiosSecure.patch(`/riders/${id}`, { status: "active", email });
         toast.success("Rider activated!");
         refetch();
       }
@@ -96,7 +96,7 @@ const PendingRider = () => {
   }
 
   return (
-    <div className="overflow-x-auto max-w-5xl mt-6">
+    <div className="overflow-x-auto mx-auto mt-6">
       <table className="table table-zebra w-full">
         <thead>
           <tr>
@@ -132,7 +132,7 @@ const PendingRider = () => {
                   View
                 </button>
                 <button
-                  onClick={() => handleActivate(rider._id)}
+                  onClick={() => handleActivate(rider._id, rider.email)}
                   className="btn btn-sm btn-success"
                 >
                   Activate

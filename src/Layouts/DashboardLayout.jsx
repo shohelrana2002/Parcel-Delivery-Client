@@ -43,6 +43,11 @@ const DashboardLayout = () => {
       to: "activeRiders",
       icon: <FaUserCheck className="w-5 h-5" />,
     },
+    {
+      name: "Make Admin",
+      to: "makeAdmin",
+      icon: <FaUserCheck className="w-5 h-5" />,
+    },
   ];
   const [open, setOpen] = useState(false);
 

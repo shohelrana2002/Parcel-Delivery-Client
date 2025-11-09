@@ -1,7 +1,7 @@
 import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import SocialLogin from "../SocialLogin/SocialLogin";
@@ -13,7 +13,8 @@ const Register = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
-
+  const location = useLocation();
+  const from = location?.state?.from || "/";
   const { handleRegister, handleEmailVerify, handleLogOut, updateUserInfo } =
     useAuth();
   const {
@@ -40,7 +41,7 @@ const Register = () => {
       await saveUser(data.email);
       toast.success("Check Yor Gmail and Verify Account");
       await handleLogOut();
-      navigate("/login");
+      navigate(from);
     } catch (err) {
       toast.error(err?.message);
       setLoading(false);

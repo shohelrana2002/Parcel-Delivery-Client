@@ -12,6 +12,7 @@ const ActiveRider = () => {
     data: activeRiders = [],
     refetch,
     isLoading,
+    isPending,
   } = useQuery({
     queryKey: ["activeRiders"],
     queryFn: async () => {
@@ -37,7 +38,7 @@ const ActiveRider = () => {
     }
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading || isPending) return <Loader />;
 
   // 🔹 Filter active riders based on search text
   const filteredRiders = activeRiders.filter((rider) =>
