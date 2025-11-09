@@ -3,8 +3,10 @@ import useAuth from "../../../Hooks/useAuth";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router";
+import useSaveUser from "../../../Hooks/useSaveUser";
 
 const SocialLogin = () => {
+  const saveUser = useSaveUser();
   const { handleGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -13,7 +15,9 @@ const SocialLogin = () => {
   const handleGoogleLogin = async () => {
     setLoading(true);
     try {
-      await handleGoogle();
+      const result = await handleGoogle();
+      const userEmail = result.user.email;
+      await saveUser(userEmail);
       toast.success("Login Success");
       navigate(from);
     } catch (err) {

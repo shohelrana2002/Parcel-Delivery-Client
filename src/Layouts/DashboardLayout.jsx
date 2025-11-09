@@ -7,6 +7,7 @@ import { User, PackageCheck } from "lucide-react";
 import { BsClockHistory } from "react-icons/bs";
 import { FaLocationDot } from "react-icons/fa6";
 import useAuth from "../Hooks/useAuth";
+import { FaBox, FaUserClock, FaUserCheck } from "react-icons/fa";
 const DashboardLayout = () => {
   const { handleLogOut } = useAuth();
   const location = useLocation();
@@ -30,7 +31,17 @@ const DashboardLayout = () => {
     {
       name: "Track a Package",
       to: "trackPackage",
-      icon: <FaLocationDot className="w-5 h-5" />,
+      icon: <FaBox className="w-5 h-5" />,
+    },
+    {
+      name: "Pending Riders",
+      to: "pendingRiders",
+      icon: <FaUserClock className="w-5 h-5" />,
+    },
+    {
+      name: "Active Riders",
+      to: "activeRiders",
+      icon: <FaUserCheck className="w-5 h-5" />,
     },
   ];
   const [open, setOpen] = useState(false);

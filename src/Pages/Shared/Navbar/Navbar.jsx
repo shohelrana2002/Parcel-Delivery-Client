@@ -71,6 +71,20 @@ const Navbar = () => {
           Send Parcel
         </NavLink>
       </li>
+      <li>
+        <NavLink
+          to="/beArider"
+          className={({ isActive }) =>
+            `px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+              isActive
+                ? "bg-blue-600 text-white shadow-md scale-105"
+                : "text-gray-700 hover:bg-blue-100 hover:text-blue-600"
+            }`
+          }
+        >
+          Be a Rider
+        </NavLink>
+      </li>
     </>
   );
   return (

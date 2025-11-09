@@ -13,6 +13,9 @@ import UserProfile from "../Pages/Dashboard/UserProfile/UserProfile";
 import Payment from "../Pages/Dashboard/Payment/Payment";
 import PaymentHistory from "../Pages/Dashboard/PaymentHistory/PaymentHistory";
 import TrackPackage from "../Pages/Dashboard/TrackPackage/TrackPackage";
+import BeARider from "../Pages/Dashboard/BeARider/BeARider";
+import PendingRider from "../Pages/Dashboard/PendingRider/PendingRider";
+import ActiveRider from "../Pages/Dashboard/ActiveRider/ActiveRider";
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +37,15 @@ export const router = createBrowserRouter([
             <SendParcel />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/beArider",
+        element: (
+          <PrivateRoute>
+            <BeARider />
+          </PrivateRoute>
+        ),
+        loader: () => fetch("/data/area.json").then((res) => res.json()),
       },
     ],
   },
@@ -82,6 +94,14 @@ export const router = createBrowserRouter([
       {
         path: "trackPackage",
         element: <TrackPackage />,
+      },
+      {
+        path: "pendingRiders",
+        element: <PendingRider />,
+      },
+      {
+        path: "activeRiders",
+        element: <ActiveRider />,
       },
     ],
   },

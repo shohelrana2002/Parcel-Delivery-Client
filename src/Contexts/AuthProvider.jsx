@@ -8,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../Firebase/Firebase";
 
@@ -21,6 +22,11 @@ const AuthProvider = ({ children }) => {
   const handleLoginAuth = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const updateUserInfo = (userInfo) => {
+    setLoading(true);
+    return updateProfile(auth.currentUser, userInfo);
   };
 
   useEffect(() => {
@@ -57,6 +63,7 @@ const AuthProvider = ({ children }) => {
     handleLogOut,
     handleGoogle,
     handleRegister,
+    updateUserInfo,
     handleEmailVerify,
     handleLoginAuth,
   };

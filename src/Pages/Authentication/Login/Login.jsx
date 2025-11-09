@@ -4,6 +4,7 @@ import useAuth from "../../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import { useState } from "react";
+import useSaveUser from "../../../Hooks/useSaveUser";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -13,6 +14,7 @@ const Login = () => {
     watch,
     formState: { errors },
   } = useForm();
+  const saveUser = useSaveUser();
   const location = useLocation();
   const from = location?.state?.from || "/";
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ const Login = () => {
       if (!fetch.user.emailVerified) {
         return toast.error("plz verified your gmail");
       }
+      await saveUser(data.email);
       toast.success("login successfully");
       navigate(from);
     } catch (err) {

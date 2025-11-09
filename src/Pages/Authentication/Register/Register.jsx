@@ -5,12 +5,17 @@ import { Link, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import ImageUpload from "../../../Hooks/ImageUpload";
+import useSaveUser from "../../../Hooks/useSaveUser";
 
 const Register = () => {
+  const saveUser = useSaveUser();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
-  const { handleRegister, handleEmailVerify, handleLogOut } = useAuth();
+
+  const { handleRegister, handleEmailVerify, handleLogOut, updateUserInfo } =
+    useAuth();
   const {
     register,
     handleSubmit,
@@ -21,9 +26,18 @@ const Register = () => {
 
   const handleLogin = async (data) => {
     setLoading(true);
+
     const res = await handleRegister(data.email, data.password);
     try {
+      const imageFile = data.image[0];
       await handleEmailVerify(res.user);
+      const img = await ImageUpload(imageFile);
+      const userInfo = {
+        displayName: data.name,
+        photoURL: img.data.url,
+      };
+      await updateUserInfo(userInfo);
+      await saveUser(data.email);
       toast.success("Check Yor Gmail and Verify Account");
       await handleLogOut();
       navigate("/login");
@@ -52,6 +66,7 @@ const Register = () => {
       isValid: /[@$!%*?&]/.test(password),
     },
   ];
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
@@ -77,6 +92,22 @@ const Register = () => {
             {errors.name && (
               <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
             )}
+          </div>
+          {/*file image upload */}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Enter Your Image
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                {...register("image", { required: "Image is required" })}
+                className={`w-full px-4 py-2 border ${
+                  errors.image ? "border-red-500" : "border-gray-300"
+                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400`}
+              />
+            </div>
           </div>
           {/* Email Field */}
           <div>
@@ -159,6 +190,7 @@ const Register = () => {
           {/* Submit Button */}
           <button
             type="submit"
+            disabled={loading}
             className="btn w-full btn-primary text-secondary"
           >
             {loading ? "Loading..." : " Register"}

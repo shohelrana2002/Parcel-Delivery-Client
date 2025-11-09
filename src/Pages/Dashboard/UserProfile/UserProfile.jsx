@@ -4,31 +4,36 @@ import useAuth from "../../../Hooks/useAuth";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../../../Firebase/Firebase";
 import toast from "react-hot-toast";
+import ImageUpload from "../../../Hooks/ImageUpload";
 const UserProfile = () => {
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Handle input changes
-
-  // Handle save (for demo)
+  const [loading, setLoading] = useState(false);
   const handleSave = async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const name = form.name.value;
-    // const location = form.location.value;
-    // const phone = form.phone.value;
-    await updateProfile(auth.currentUser, {
-      displayName: name,
-    })
-      .then(() => {
-        toast.success("Updated Success user");
-      })
-      .catch((error) => {
-        toast.error(error?.message);
+    try {
+      setLoading(true);
+      e.preventDefault();
+      const form = e.target;
+      const name = form.name.value;
+      const image = form.image.files[0];
+
+      const res = await ImageUpload(image);
+
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+        photoURL: res?.data?.url,
       });
 
-    // data save TODO:
-    setIsModalOpen(false);
+      toast.success("Updated Success user");
+
+      // data save TODO:
+      setIsModalOpen(false);
+    } catch (error) {
+      setLoading(false);
+      toast.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -112,6 +117,14 @@ const UserProfile = () => {
                   placeholder="Enter your name"
                 />
               </div>
+              <div>
+                <label className="label font-medium">upload Your Image</label>
+                <input
+                  type="file"
+                  name="image"
+                  className="input input-bordered w-full"
+                />
+              </div>
 
               <div>
                 <label className="label font-medium">Phone Number</label>
@@ -143,10 +156,11 @@ const UserProfile = () => {
                   Cancel
                 </button>
                 <button
+                  disabled={loading}
                   type="submit"
-                  className="btn bg-blue-600 hover:bg-blue-700 text-white"
+                  className="btn btn-warning"
                 >
-                  Save Changes
+                  {loading ? "Updated..." : " Save Changes"}
                 </button>
               </div>
             </form>
