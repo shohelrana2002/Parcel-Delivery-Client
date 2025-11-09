@@ -5,8 +5,20 @@ import { updateProfile } from "firebase/auth";
 import { auth } from "../../../Firebase/Firebase";
 import toast from "react-hot-toast";
 import ImageUpload from "../../../Hooks/ImageUpload";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import Loader from "../../Shared/Loader/Loader";
 const UserProfile = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const { data = [], isLoading } = useQuery({
+    queryKey: ["users", user.email],
+    queryFn: async () => {
+      const { data } = await axiosSecure.get(`/users/${user.email}`);
+      return data;
+    },
+  });
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleSave = async (e) => {
@@ -35,7 +47,7 @@ const UserProfile = () => {
       setLoading(false);
     }
   };
-
+  if (isLoading) return <Loader />;
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 max-w-2xl mx-auto mt-6 border border-gray-100">
       {/* Header */}
@@ -70,7 +82,9 @@ const UserProfile = () => {
           <h3 className="text-xl font-semibold text-gray-900">
             {user?.displayName || "Unknown User"}
           </h3>
-
+          <p className="bg-orange-600 text-black font-semibold w-fit p-1 rounded-xl">
+            {data?.role}
+          </p>
           <p className="flex items-center gap-2 text-gray-600">
             <Mail size={18} className="text-blue-500" />
             {user?.email || "No Email Found"}
