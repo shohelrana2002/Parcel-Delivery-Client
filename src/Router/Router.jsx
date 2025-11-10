@@ -104,11 +104,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "pendingRiders",
-        element: <PendingRider />,
+        element: (
+          <AdminRoute>
+            <PendingRider />
+          </AdminRoute>
+        ),
       },
       {
         path: "activeRiders",
-        element: <ActiveRider />,
+        element: (
+          <AdminRoute>
+            <ActiveRider />
+          </AdminRoute>
+        ),
       },
       {
         path: "makeAdmin",
