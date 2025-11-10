@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { LogOut, Menu, User, PackageCheck } from "lucide-react";
+import {
+  LogOut,
+  Menu,
+  User,
+  PackageCheck,
+  Settings,
+  Truck,
+} from "lucide-react";
 import { IoClose } from "react-icons/io5";
 import { BsClockHistory } from "react-icons/bs";
-import { FaBox, FaUserClock, FaUserCheck } from "react-icons/fa";
-import { NavLink, Outlet, useLocation } from "react-router";
+import { FaBox, FaUserClock, FaUserCheck, FaUserShield } from "react-icons/fa";
+import { NavLink, Outlet } from "react-router";
 import ProFastLogo from "../Pages/Shared/ProFastLogo/ProFastLogo";
 import useAuth from "../Hooks/useAuth";
 import useUserRole from "../Hooks/useUserRole";
@@ -11,7 +18,6 @@ import Loader from "../Pages/Shared/Loader/Loader";
 
 const DashboardLayout = () => {
   const { handleLogOut } = useAuth();
-  const location = useLocation();
   const { role, roleLoading } = useUserRole();
   const [open, setOpen] = useState(false);
 
@@ -23,75 +29,112 @@ const DashboardLayout = () => {
     );
   }
 
-  const navItems = [
-    {
-      name: "My Profile",
-      to: "myProfile",
-      icon: <User className="w-5 h-5" />,
-      activeMatch: ["/dashboard"],
-    },
-    {
-      name: "My Parcels",
-      to: "myParcels",
-      icon: <PackageCheck className="w-5 h-5" />,
-    },
-    {
-      name: "Payment History",
-      to: "paymentHistory",
-      icon: <BsClockHistory className="w-5 h-5" />,
-    },
-    {
-      name: "Track a Package",
-      to: "trackPackage",
-      icon: <FaBox className="w-5 h-5" />,
-    },
-  ];
+  const linkClass = ({ isActive }) =>
+    `flex items-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-300 shadow-sm ${
+      isActive
+        ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-md scale-[1.03]"
+        : "bg-white text-gray-700 hover:bg-blue-100 hover:text-blue-600"
+    }`;
 
-  if (role === "admin") {
-    navItems.push(
-      {
-        name: "Pending Riders",
-        to: "pendingRiders",
-        icon: <FaUserClock className="w-5 h-5" />,
-      },
-      {
-        name: "Active Riders",
-        to: "activeRiders",
-        icon: <FaUserCheck className="w-5 h-5" />,
-      },
-      {
-        name: "Make Admin",
-        to: "makeAdmin",
-        icon: <FaUserCheck className="w-5 h-5" />,
-      }
-    );
-  }
+  // 🎯 Common User routes
+  const userLinks = (
+    <>
+      <li>
+        <NavLink to="myProfile" className={linkClass}>
+          <User className="w-5 h-5" />
+          <span>My Profile</span>
+        </NavLink>
+      </li>
 
-  // 🚴 Rider role এর জন্য menu (optional)
-  if (role === "rider") {
-    navItems.push({
-      name: "My Deliveries",
-      to: "riderTasks",
-      icon: <FaBox className="w-5 h-5" />,
-    });
-  }
+      <li>
+        <NavLink to="myParcels" className={linkClass}>
+          <PackageCheck className="w-5 h-5" />
+          <span>My Parcels</span>
+        </NavLink>
+      </li>
+
+      <li>
+        <NavLink to="paymentHistory" className={linkClass}>
+          <BsClockHistory className="w-5 h-5" />
+          <span>Payment History</span>
+        </NavLink>
+      </li>
+
+      <li>
+        <NavLink to="trackPackage" className={linkClass}>
+          <FaBox className="w-5 h-5" />
+          <span>Track a Package</span>
+        </NavLink>
+      </li>
+    </>
+  );
+
+  // 🚴 Rider routes
+  const riderLinks = (
+    <>
+      {/* <li>
+        <NavLink to="riderTasks" className={linkClass}>
+          <Truck className="w-5 h-5" />
+          <span>My Deliveries</span>
+        </NavLink>
+      </li> */}
+
+      {/* <li>
+        <NavLink to="riderEarnings" className={linkClass}>
+          <BsClockHistory className="w-5 h-5" />
+          <span>Earnings</span>
+        </NavLink>
+      </li> */}
+    </>
+  );
+
+  // 🛡️ Admin routes (see all)
+  const adminLinks = (
+    <>
+      <li>
+        <NavLink to="pendingRiders" className={linkClass}>
+          <FaUserClock className="w-5 h-5" />
+          <span>Pending Riders</span>
+        </NavLink>
+      </li>
+
+      <li>
+        <NavLink to="activeRiders" className={linkClass}>
+          <FaUserCheck className="w-5 h-5" />
+          <span>Active Riders</span>
+        </NavLink>
+      </li>
+
+      <li>
+        <NavLink to="makeAdmin" className={linkClass}>
+          <FaUserShield className="w-5 h-5" />
+          <span>Make Admin</span>
+        </NavLink>
+      </li>
+
+      {/* <li>
+        <NavLink to="settings" className={linkClass}>
+          <Settings className="w-5 h-5" />
+          <span>Admin Settings</span>
+        </NavLink>
+      </li> */}
+    </>
+  );
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
-      {/* Mobile Navbar */}
-      <div className="md:hidden bg-blue-500 text-white p-4 flex justify-between items-center shadow relative">
+      {/* 📱 Mobile Navbar */}
+      <div className="md:hidden bg-blue-600 text-white p-4 flex justify-between items-center shadow relative">
         <button
           onClick={() => setOpen(!open)}
           className="absolute left-4 top-4 focus:outline-none"
         >
           {open ? <IoClose size={22} /> : <Menu className="w-6 h-6" />}
         </button>
-        <h1 className="text-lg font-semibold text-center w-full">
-          My Dashboard
-        </h1>
+        <h1 className="text-lg font-semibold text-center w-full">Dashboard</h1>
       </div>
 
-      {/* Sidebar */}
+      {/* 🧭 Sidebar */}
       <div
         className={`${
           open ? "block" : "hidden"
@@ -100,28 +143,21 @@ const DashboardLayout = () => {
         <ProFastLogo />
 
         <div className="flex flex-col justify-between h-[calc(100vh-120px)]">
-          {/* Navigation Items */}
           <ul className="space-y-2">
-            {navItems.map((item, index) => (
-              <li key={index}>
-                <NavLink
-                  to={item.to}
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-300 shadow-sm ${
-                      isActive || item.activeMatch?.includes(location.pathname)
-                        ? "bg-linear-to-r from-green-600 to-green-500 text-white shadow-md scale-[1.03]"
-                        : "bg-white text-gray-700 hover:bg-blue-100 hover:text-blue-600"
-                    }`
-                  }
-                >
-                  {item.icon}
-                  <span>{item.name}</span>
-                </NavLink>
-              </li>
-            ))}
+            {/* 🧠 Conditional Nav */}
+            {userLinks}
+
+            {role === "rider" && riderLinks}
+
+            {role === "admin" && (
+              <>
+                {riderLinks}
+                {adminLinks}
+              </>
+            )}
           </ul>
 
-          {/* Logout Button */}
+          {/* 🚪 Logout Button */}
           <button
             onClick={handleLogOut}
             className="btn bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 
@@ -134,7 +170,7 @@ const DashboardLayout = () => {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* 📄 Main Content */}
       <div className="flex-1 bg-gray-100 p-5">
         <Outlet />
       </div>
