@@ -9,7 +9,13 @@ import {
 } from "lucide-react";
 import { IoClose } from "react-icons/io5";
 import { BsClockHistory } from "react-icons/bs";
-import { FaBox, FaUserClock, FaUserCheck, FaUserShield } from "react-icons/fa";
+import {
+  FaBox,
+  FaUserClock,
+  FaUserCheck,
+  FaUserShield,
+  FaBicycle,
+} from "react-icons/fa";
 import { NavLink, Outlet } from "react-router";
 import ProFastLogo from "../Pages/Shared/ProFastLogo/ProFastLogo";
 import useAuth from "../Hooks/useAuth";
@@ -95,6 +101,12 @@ const DashboardLayout = () => {
         <NavLink to="pendingRiders" className={linkClass}>
           <FaUserClock className="w-5 h-5" />
           <span>Pending Riders</span>
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="assignRider" className={linkClass}>
+          <FaBicycle className="w-5 h-5" />
+          <span>Assign Rider</span>
         </NavLink>
       </li>
 

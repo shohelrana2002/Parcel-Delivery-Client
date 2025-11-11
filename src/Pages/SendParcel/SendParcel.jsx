@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { useNavigate } from "react-router";
 // generate token tracking
 const generateTrackingNumber = () => {
   const now = new Date();
@@ -14,6 +15,7 @@ const generateTrackingNumber = () => {
 };
 
 const SendParcel = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const {
     register,
@@ -167,6 +169,7 @@ const SendParcel = () => {
         axiosSecure.post("/parcels", parcelData).then((res) => {
           if (res.data?.insertedId) {
             Swal.fire("Success!", "Parcel Confirm .", "success");
+            navigate("/dashboard/myParcels");
           }
         });
       }

@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
 
 const PaymentForm = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
@@ -29,6 +30,7 @@ const PaymentForm = () => {
   });
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (!elements || !stripe) {
       return;
@@ -43,6 +45,7 @@ const PaymentForm = () => {
       card,
     });
     if (error) {
+      setLoading(false);
       console.log("[error]", error.message);
       setErrorMessage(error?.message);
     } else {
@@ -62,6 +65,7 @@ const PaymentForm = () => {
         },
       });
       if (result.error) {
+        setLoading(false);
         setErrorMessage(error.message);
       } else if (result?.paymentIntent?.status === "succeeded") {
         setErrorMessage("");
@@ -79,6 +83,7 @@ const PaymentForm = () => {
         if (paymentRes.data?.insertedId) {
           toast.success(" Payment Successful!");
           navigate("/dashboard/myParcels");
+          setLoading(false);
         }
       }
       //   console.log("paymentMethod", paymentMethod);
@@ -131,7 +136,7 @@ const PaymentForm = () => {
 
       <button
         type="submit"
-        disabled={!stripe}
+        disabled={!stripe || loading}
         className="btn w-full text-secondary btn-primary"
       >
         Pay Now <span className=""> {parcelInfo?.cost} ৳</span>

@@ -4,8 +4,6 @@ const MyParcelsTable = ({
   handlePay,
   handleDetails,
 }) => {
-  console.log(parcels);
-
   return (
     <div className="overflow-x-auto mx-auto bg-white shadow-lg rounded-xl mt-6">
       <table className="table table-zebra w-full">
