@@ -6,6 +6,7 @@ import {
   PackageCheck,
   Settings,
   Truck,
+  CheckCircle,
 } from "lucide-react";
 import { IoClose } from "react-icons/io5";
 import { BsClockHistory } from "react-icons/bs";
@@ -82,6 +83,18 @@ const DashboardLayout = () => {
         <NavLink to="pendingDelivery" className={linkClass}>
           <Truck className="w-5 h-5" />
           <span>Pending Deliveries</span>
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="completeDeliveries" className={linkClass}>
+          <CheckCircle className="w-5 h-5" />
+          <span>Complete Deliveries</span>
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="myEarning" className={linkClass}>
+          <CheckCircle className="w-5 h-5" />
+          <span>My Earning</span>
         </NavLink>
       </li>
 

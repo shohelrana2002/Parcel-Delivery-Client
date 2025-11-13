@@ -21,6 +21,8 @@ import ForbiddenAccess from "../Pages/ForbiddenAccess/ForbiddenAccess";
 import AdminRoute from "../Routes/AdminRoute";
 import AssignRider from "../Pages/Dashboard/AssignRider/AssignRider";
 import PendingDelivery from "../Pages/Dashboard/PendingDelivery/PendingDelivery";
+import CompleteDeliveries from "../Pages/Dashboard/CompleteDeliveries/CompleteDeliveries";
+import MyEarning from "../Pages/Dashboard/MyEarning/MyEarning";
 
 export const router = createBrowserRouter([
   {
@@ -91,6 +93,14 @@ export const router = createBrowserRouter([
       {
         path: "pendingDelivery",
         element: <PendingDelivery />,
+      },
+      {
+        path: "completeDeliveries",
+        element: <CompleteDeliveries />,
+      },
+      {
+        path: "myEarning",
+        element: <MyEarning />,
       },
       {
         path: "myParcels",
