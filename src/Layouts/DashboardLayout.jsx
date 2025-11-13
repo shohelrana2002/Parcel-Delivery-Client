@@ -78,12 +78,12 @@ const DashboardLayout = () => {
   // 🚴 Rider routes
   const riderLinks = (
     <>
-      {/* <li>
-        <NavLink to="riderTasks" className={linkClass}>
+      <li>
+        <NavLink to="pendingDelivery" className={linkClass}>
           <Truck className="w-5 h-5" />
-          <span>My Deliveries</span>
+          <span>Pending Deliveries</span>
         </NavLink>
-      </li> */}
+      </li>
 
       {/* <li>
         <NavLink to="riderEarnings" className={linkClass}>
@@ -159,11 +159,11 @@ const DashboardLayout = () => {
             {/* 🧠 Conditional Nav */}
             {userLinks}
 
-            {role === "rider" && riderLinks}
+            {!roleLoading && role === "rider" && riderLinks}
 
-            {role === "admin" && (
+            {!roleLoading && role === "admin" && (
               <>
-                {riderLinks}
+                {/* {riderLinks} */}
                 {adminLinks}
               </>
             )}

@@ -20,6 +20,7 @@ import MakeAdmin from "../Pages/Dashboard/MakeAdmin/MakeAdmin";
 import ForbiddenAccess from "../Pages/ForbiddenAccess/ForbiddenAccess";
 import AdminRoute from "../Routes/AdminRoute";
 import AssignRider from "../Pages/Dashboard/AssignRider/AssignRider";
+import PendingDelivery from "../Pages/Dashboard/PendingDelivery/PendingDelivery";
 
 export const router = createBrowserRouter([
   {
@@ -86,6 +87,10 @@ export const router = createBrowserRouter([
       {
         path: "myProfile",
         element: <UserProfile />,
+      },
+      {
+        path: "pendingDelivery",
+        element: <PendingDelivery />,
       },
       {
         path: "myParcels",

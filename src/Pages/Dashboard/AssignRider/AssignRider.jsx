@@ -36,6 +36,7 @@ const AssignRider = () => {
     queryKey: ["riders"],
     queryFn: async () => {
       const { data } = await axiosSecure.get("/users?status=active");
+
       return data;
     },
   });

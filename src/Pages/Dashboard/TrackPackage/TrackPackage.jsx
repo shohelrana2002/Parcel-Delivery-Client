@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { FaMapMarkerAlt, FaBox, FaTruck, FaCheckCircle } from "react-icons/fa";
-
+import { FaBox, FaTruck, FaCheckCircle } from "react-icons/fa";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import Loader from "../../Shared/Loader/Loader";
@@ -21,10 +20,7 @@ const TrackPackage = () => {
   } = useQuery({
     queryKey: ["track-parcels", user?.email],
     queryFn: async () => {
-      const { data } = await axiosSecure.get(
-        `/parcels?email=${user.email}&delivery_status=assigned`
-      );
-      console.log(data);
+      const { data } = await axiosSecure.get(`/parcels?email=${user.email}`);
       return data.sort(
         (a, b) => new Date(b.assigned_date) - new Date(a.assigned_date)
       );
@@ -43,7 +39,7 @@ const TrackPackage = () => {
   if (isError) {
     return (
       <div className="text-center text-red-500 py-10">
-        ❌ Failed to load data: {error.message}
+        Failed to load data: {error.message}
       </div>
     );
   }
@@ -52,12 +48,12 @@ const TrackPackage = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-blue-600">
-          📦 Track Your Parcels
+          📦 Track Your Parcels{" "}
+          <span className="font-extrabold text-yellow-900">
+            {parcels?.length}
+          </span>
         </h1>
-        <button
-          onClick={refetch}
-          className="bg-blue-500 hover:bg-blue-600 text-white"
-        >
+        <button onClick={refetch} className="btn btn-warning">
           Refresh
         </button>
       </div>
