@@ -134,7 +134,12 @@ const CompleteDeliveries = () => {
                       </span>
                     ) : (
                       <button
-                        onClick={() => handleCashout(parcel._id, parcel.cost)}
+                        onClick={() =>
+                          handleCashout(
+                            parcel._id,
+                            totalEarning(parcel).toFixed(2)
+                          )
+                        }
                         className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm transition-all"
                       >
                         Cashout
