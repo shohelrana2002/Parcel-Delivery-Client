@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import { RiMoneyDollarBoxFill } from "react-icons/ri";
 import {
   LogOut,
   Menu,
   User,
   PackageCheck,
-  Settings,
   Truck,
   CheckCircle,
 } from "lucide-react";
@@ -93,7 +93,7 @@ const DashboardLayout = () => {
       </li>
       <li>
         <NavLink to="myEarning" className={linkClass}>
-          <CheckCircle className="w-5 h-5" />
+          <RiMoneyDollarBoxFill className="w-5 h-5" />
           <span>My Earning</span>
         </NavLink>
       </li>
