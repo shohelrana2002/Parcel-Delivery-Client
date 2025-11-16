@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 ChartJS.register(
   CategoryScale,
@@ -121,6 +122,9 @@ const MyEarning = () => {
 
   return (
     <div className="p-6">
+      <Helmet>
+        <title>Fastest DashBoard || My earning</title>
+      </Helmet>
       <h2 className="text-2xl font-bold mb-6 text-center">💰 My Earnings</h2>
 
       {/* Summary cards */}

@@ -22,6 +22,7 @@ import ProFastLogo from "../Pages/Shared/ProFastLogo/ProFastLogo";
 import useAuth from "../Hooks/useAuth";
 import useUserRole from "../Hooks/useUserRole";
 import Loader from "../Pages/Shared/Loader/Loader";
+import { Helmet, HelmetProvider } from "@dr.pogodin/react-helmet";
 
 const DashboardLayout = () => {
   const { handleLogOut } = useAuth();
@@ -147,59 +148,66 @@ const DashboardLayout = () => {
   );
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
-      {/* 📱 Mobile Navbar */}
-      <div className="md:hidden bg-blue-600 text-white p-4 flex justify-between items-center shadow relative">
-        <button
-          onClick={() => setOpen(!open)}
-          className="absolute left-4 top-4 focus:outline-none"
-        >
-          {open ? <IoClose size={22} /> : <Menu className="w-6 h-6" />}
-        </button>
-        <h1 className="text-lg font-semibold text-center w-full">Dashboard</h1>
-      </div>
-
-      {/* 🧭 Sidebar */}
-      <div
-        className={`${
-          open ? "block" : "hidden"
-        } md:block bg-blue-100 text-gray-800 w-full md:w-64 p-5 space-y-3 transition-all duration-300 shadow-md`}
-      >
-        <ProFastLogo />
-
-        <div className="flex flex-col justify-between h-[calc(100vh-120px)]">
-          <ul className="space-y-2">
-            {/* 🧠 Conditional Nav */}
-            {userLinks}
-
-            {!roleLoading && role === "rider" && riderLinks}
-
-            {!roleLoading && role === "admin" && (
-              <>
-                {/* {riderLinks} */}
-                {adminLinks}
-              </>
-            )}
-          </ul>
-
-          {/* 🚪 Logout Button */}
+    <HelmetProvider>
+      <Helmet>
+        <title>Fastest || DashBoard </title>
+      </Helmet>
+      <div className="flex flex-col md:flex-row min-h-screen">
+        {/* 📱 Mobile Navbar */}
+        <div className="md:hidden bg-blue-600 text-white p-4 flex justify-between items-center shadow relative">
           <button
-            onClick={handleLogOut}
-            className="btn bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 
+            onClick={() => setOpen(!open)}
+            className="absolute left-4 top-4 focus:outline-none"
+          >
+            {open ? <IoClose size={22} /> : <Menu className="w-6 h-6" />}
+          </button>
+          <h1 className="text-lg font-semibold text-center w-full">
+            Dashboard
+          </h1>
+        </div>
+
+        {/* 🧭 Sidebar */}
+        <div
+          className={`${
+            open ? "block" : "hidden"
+          } md:block bg-blue-100 text-gray-800 w-full md:w-64 p-5 space-y-3 transition-all duration-300 shadow-md`}
+        >
+          <ProFastLogo />
+
+          <div className="flex flex-col justify-between h-[calc(100vh-120px)]">
+            <ul className="space-y-2">
+              {/* 🧠 Conditional Nav */}
+              {userLinks}
+
+              {!roleLoading && role === "rider" && riderLinks}
+
+              {!roleLoading && role === "admin" && (
+                <>
+                  {/* {riderLinks} */}
+                  {adminLinks}
+                </>
+              )}
+            </ul>
+
+            {/* 🚪 Logout Button */}
+            <button
+              onClick={handleLogOut}
+              className="btn bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 
              text-white w-full flex items-center justify-center gap-2 shadow-md hover:shadow-lg 
              transition-all duration-300 rounded-xl border-none mt-4"
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
-          </button>
+            >
+              <LogOut size={18} />
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 📄 Main Content */}
+        <div className="flex-1 bg-gray-100 p-5">
+          <Outlet />
         </div>
       </div>
-
-      {/* 📄 Main Content */}
-      <div className="flex-1 bg-gray-100 p-5">
-        <Outlet />
-      </div>
-    </div>
+    </HelmetProvider>
   );
 };
 

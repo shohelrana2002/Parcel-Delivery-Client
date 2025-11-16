@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import Loader from "../../Shared/Loader/Loader";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const PaymentHistory = () => {
   const { user } = useAuth();
@@ -34,6 +35,9 @@ const PaymentHistory = () => {
 
   return (
     <div className="p-4 md:p-6 bg-white rounded-2xl shadow-md overflow-hidden">
+      <Helmet>
+        <title>Fastest DashBoard || Payment History</title>
+      </Helmet>
       <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-5 text-center md:text-left">
         💳 Payment History ({paymentHistory?.length || 0})
       </h2>

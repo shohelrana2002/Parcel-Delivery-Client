@@ -7,6 +7,7 @@ import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../Shared/Loader/Loader";
 import { useNavigate } from "react-router";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const MyParcels = () => {
   const navigate = useNavigate();
@@ -64,6 +65,9 @@ const MyParcels = () => {
   };
   return (
     <div className="px-5">
+      <Helmet>
+        <title>Fastest DashBoard || Parcel</title>
+      </Helmet>
       <h2 className="text-2xl font-semibold mb-4">📦 My Parcels</h2>
       <MyParcelsTable
         parcels={parcels}

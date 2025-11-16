@@ -6,6 +6,7 @@ import useAuth from "../../../Hooks/useAuth";
 import ImageUpload from "../../../Hooks/ImageUpload";
 import { ThreeDots } from "react-loader-spinner";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const BeARider = () => {
   const [loading, setLoading] = useState(false);
@@ -87,6 +88,9 @@ const BeARider = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white shadow-lg rounded-2xl mt-8">
+      <Helmet>
+        <title>Fastest || Be Rider </title>
+      </Helmet>
       <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
         🚴‍♂️ Be A Rider Application
       </h2>

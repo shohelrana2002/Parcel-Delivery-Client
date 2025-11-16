@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const CompleteDeliveries = () => {
   const axiosSecure = useAxiosSecure();
@@ -83,6 +84,9 @@ const CompleteDeliveries = () => {
 
   return (
     <div className="p-6">
+      <Helmet>
+        <title>Fastest DashBoard ||Complete Delivery</title>
+      </Helmet>
       <h2 className="text-xl font-semibold mb-4">Completed Deliveries</h2>
 
       {/* ✅ Total earnings summary */}

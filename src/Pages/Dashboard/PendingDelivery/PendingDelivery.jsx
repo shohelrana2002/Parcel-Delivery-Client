@@ -4,6 +4,7 @@ import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../Shared/Loader/Loader";
 import Swal from "sweetalert2";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const PendingDelivery = () => {
   const { user } = useAuth();
@@ -90,6 +91,9 @@ const PendingDelivery = () => {
 
   return (
     <div className="bg-white shadow-md rounded-xl p-6">
+      <Helmet>
+        <title>Fastest DashBoard || Pending Delivery</title>
+      </Helmet>
       <h2 className="text-2xl font-bold text-blue-600 mb-5 text-center">
         🛵 Pending Deliveries
       </h2>

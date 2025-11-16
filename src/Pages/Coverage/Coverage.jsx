@@ -4,6 +4,7 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 import L from "leaflet";
 import locations from "../../data/location.json";
 import MapActions from "./MapActions";
+import { Helmet } from "@dr.pogodin/react-helmet";
 const notFound =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPc3nCMbgH8lElexAa_bditHj6ihuf-ZqUlA&s";
 
@@ -77,6 +78,9 @@ const Coverage = () => {
 
   return (
     <div className="space-y-4">
+      <Helmet>
+        <title>Fastest || Coverage</title>
+      </Helmet>
       <p className="text-center text-xl text-gray-600">
         Total Locations: {filtered.length} available
       </p>

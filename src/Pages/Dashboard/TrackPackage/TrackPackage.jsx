@@ -6,6 +6,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import Loader from "../../Shared/Loader/Loader";
 import { motion } from "framer-motion";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const TrackPackage = () => {
   const { user } = useAuth();
@@ -46,6 +47,9 @@ const TrackPackage = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
+      <Helmet>
+        <title>Fastest DashBoard || Track Package</title>
+      </Helmet>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-blue-600">
           📦 Track Your Parcels{" "}

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import Loader from "../../Shared/Loader/Loader";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const ActiveRider = () => {
   const axiosSecure = useAxiosSecure();
@@ -52,6 +53,9 @@ const ActiveRider = () => {
 
   return (
     <div className="p-6 bg-white shadow-lg rounded-2xl mt-6 overflow-x-auto">
+      <Helmet>
+        <title>Fastest DashBoard || Active Rider</title>
+      </Helmet>
       <h2 className="text-2xl font-bold mb-4 text-center text-blue-600">
         Active Riders ({filteredRiders.length})
       </h2>

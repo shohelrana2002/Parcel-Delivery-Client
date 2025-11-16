@@ -8,6 +8,7 @@ import ImageUpload from "../../../Hooks/ImageUpload";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../Shared/Loader/Loader";
+import { Helmet } from "@dr.pogodin/react-helmet";
 const UserProfile = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -51,6 +52,9 @@ const UserProfile = () => {
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 max-w-2xl mx-auto mt-6 border border-gray-100">
       {/* Header */}
+      <Helmet>
+        <title>Fastest DashBoard || My profile</title>
+      </Helmet>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
           <User className="text-blue-600" size={24} />

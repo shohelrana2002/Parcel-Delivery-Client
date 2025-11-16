@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../Shared/Loader/Loader";
 import useAuth from "../../../Hooks/useAuth";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const MakeAdmin = () => {
   const { user: loginEmail } = useAuth();
@@ -77,6 +78,9 @@ const MakeAdmin = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-xl">
+      <Helmet>
+        <title>Fastest DashBoard || MakeAdmin</title>
+      </Helmet>
       <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
         👑 Make Admin Panel
       </h2>

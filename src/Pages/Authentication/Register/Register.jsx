@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import ImageUpload from "../../../Hooks/ImageUpload";
 import useSaveUser from "../../../Hooks/useSaveUser";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const Register = () => {
   const saveUser = useSaveUser();

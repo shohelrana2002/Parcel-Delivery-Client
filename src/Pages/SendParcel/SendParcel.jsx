@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useNavigate } from "react-router";
+import { Helmet } from "@dr.pogodin/react-helmet";
 // generate token tracking
 const generateTrackingNumber = () => {
   const now = new Date();
@@ -177,6 +178,9 @@ const SendParcel = () => {
   };
   return (
     <div className="container mx-auto p-5 shadow-lg rounded-lg bg-white">
+      <Helmet>
+        <title>Fastest || Send Parcel</title>
+      </Helmet>
       <h2 className="text-2xl font-bold mb-2 text-center">Send Parcel</h2>
       <p className="text-center mb-5 text-gray-500">
         Fill all the details to calculate delivery cost

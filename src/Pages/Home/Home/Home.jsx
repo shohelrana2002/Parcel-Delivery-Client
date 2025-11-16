@@ -7,10 +7,14 @@ import Benefits from "../Benefits/Benefits";
 import BeMerchant from "../BeMerchant/BeMerchant";
 import CustomerReview from "../CustomerReview/CustomerReview";
 import QuestionFAQ from "../QuestionFAQ/QuestionFAQ";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const Home = () => {
   return (
     <div>
+      <Helmet>
+        <title>Fastest || Home </title>
+      </Helmet>
       <Banner />
       <section className="bg-[rgba(148,198,203,0.2)] ">
         <HowItWorks />

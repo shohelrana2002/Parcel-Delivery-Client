@@ -4,6 +4,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import Loader from "../../Shared/Loader/Loader";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const PendingRider = () => {
   const axiosSecure = useAxiosSecure();
@@ -97,6 +98,9 @@ const PendingRider = () => {
 
   return (
     <div className="overflow-x-auto mx-auto mt-6">
+      <Helmet>
+        <title>Fastest DashBoard || Pending Rider</title>
+      </Helmet>
       <table className="table table-zebra w-full">
         <thead>
           <tr>

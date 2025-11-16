@@ -4,6 +4,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../Shared/Loader/Loader";
+import { Helmet } from "@dr.pogodin/react-helmet";
 
 const AssignRider = () => {
   const axiosSecure = useAxiosSecure();
@@ -110,6 +111,9 @@ const AssignRider = () => {
 
   return (
     <div className="bg-white shadow-md rounded-xl p-6">
+      <Helmet>
+        <title>Fastest DashBoard || Assign Rider</title>
+      </Helmet>
       <h2 className="text-2xl font-bold text-blue-600 mb-5 text-center">
         🚚 Assign Rider to Paid Parcels
       </h2>
