@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 const instance = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://parcel-server-sigma.vercel.app",
 });
 const useAxiosPublic = () => {
   return instance;

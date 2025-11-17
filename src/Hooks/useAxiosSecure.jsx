@@ -3,7 +3,7 @@ import React from "react";
 import useAuth from "./useAuth";
 import { useNavigate } from "react-router";
 const instance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://parcel-server-sigma.vercel.app",
 });
 const useAxiosSecure = () => {
   const { user, handleLogOut } = useAuth();
