@@ -1,17 +1,19 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { FaBox, FaTruck, FaCheckCircle } from "react-icons/fa";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import Loader from "../../Shared/Loader/Loader";
-import { motion } from "framer-motion";
 import { Helmet } from "@dr.pogodin/react-helmet";
+import { motion } from "framer-motion";
+import { FaCheckCircle, FaClock, FaTruckLoading } from "react-icons/fa";
+// import { FaClock, FaTruckLoading, FaTruckFast } from "react-icons/fa6";
 
 const TrackPackage = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
+  // 🟦 Fetch parcels for user
   const {
     data: parcels = [],
     isLoading,
@@ -29,6 +31,7 @@ const TrackPackage = () => {
     enabled: !!user?.email,
   });
 
+  // Loading UI
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[80vh]">
@@ -37,35 +40,61 @@ const TrackPackage = () => {
     );
   }
 
+  // Error UI
   if (isError) {
     return (
       <div className="text-center text-red-500 py-10">
-        Failed to load data: {error.message}
+        ⚠️ Failed to load: {error.message}
       </div>
     );
   }
 
+  // Status Badge Function
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "assigned":
+        return "badge badge-warning";
+      case "picked_up":
+        return "badge badge-info";
+      case "delivered":
+        return "badge badge-success";
+      default:
+        return "badge badge-neutral";
+    }
+  };
+
+  const getStatusText = (status) => {
+    if (status === "assigned") return "Assigned To Rider";
+    if (status === "picked_up") return "Picked Up";
+    if (status === "delivered") return "Delivered Successfully";
+    return status;
+  };
+
+  // Step Active Logic
+  const isActive = (current, target) => {
+    const order = ["assigned", "picked_up", "delivered"];
+    return order.indexOf(current) >= order.indexOf(target);
+  };
+
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="p-6 bg-gray-100 min-h-screen">
       <Helmet>
-        <title>Fastest DashBoard || Track Package</title>
+        <title>Fastest Dashboard | Track Package</title>
       </Helmet>
+
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-blue-600">
-          📦 Track Your Parcels{" "}
-          <span className="font-extrabold text-yellow-900">
-            {parcels?.length}
-          </span>
+        <h1 className="text-2xl md:text-3xl font-bold text-blue-700">
+          📦 Track Your Parcels ({parcels.length})
         </h1>
         <button onClick={refetch} className="btn btn-warning">
           Refresh
         </button>
       </div>
 
+      {/* Empty UI */}
       {parcels.length === 0 ? (
-        <div className="text-center text-gray-500 py-20">
-          😕 No assigned parcels found.
-        </div>
+        <p className="text-center text-gray-500 py-20">No parcels found.</p>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {parcels.map((parcel) => (
@@ -73,49 +102,58 @@ const TrackPackage = () => {
               key={parcel._id}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white shadow-md rounded-2xl p-5 border border-gray-200"
+              transition={{ duration: 0.35 }}
+              className="bg-white rounded-xl shadow-lg border border-gray-200 p-5"
             >
-              <h2 className="text-lg font-semibold text-gray-800 mb-1">
+              {/* Title */}
+              <h2 className="text-lg font-bold text-gray-800 mb-1">
                 {parcel.title}
               </h2>
-              <p className="text-sm text-gray-500 mb-3">
-                Tracking ID:{" "}
-                <span className="font-mono text-gray-700">
+              <p className="text-sm text-gray-600 mb-3">
+                Tracking ID:
+                <span className="font-mono font-semibold text-gray-900 ml-1">
                   {parcel.trackingNumber}
                 </span>
               </p>
 
-              {/* Progress Steps */}
-              <div className="flex justify-between items-center mb-4">
-                <FaBox
+              {/* Status Badge */}
+              <div className="mb-3">
+                <span
+                  className={`${getStatusBadge(
+                    parcel.delivery_status
+                  )} p-3 text-sm`}
+                >
+                  {getStatusText(parcel.delivery_status)}
+                </span>
+              </div>
+
+              {/* Progress Line */}
+              <div className="flex items-center justify-between mb-5">
+                <FaClock
                   className={`text-xl ${
-                    parcel.delivery_status === "not_collected"
-                      ? "text-gray-400"
-                      : "text-green-500"
+                    isActive(parcel.delivery_status, "assigned")
+                      ? "text-blue-600"
+                      : "text-gray-300"
                   }`}
                 />
                 <div
-                  className={`flex-1 h-1 mx-2 ${
-                    parcel.delivery_status === "assigned" ||
-                    parcel.delivery_status === "in_transit" ||
-                    parcel.delivery_status === "delivered"
-                      ? "bg-green-500"
+                  className={`h-1 flex-1 mx-2 ${
+                    isActive(parcel.delivery_status, "picked_up")
+                      ? "bg-blue-600"
                       : "bg-gray-300"
                   }`}
                 ></div>
-                <FaTruck
+                <FaTruckLoading
                   className={`text-xl ${
-                    parcel.delivery_status === "in_transit" ||
-                    parcel.delivery_status === "delivered"
-                      ? "text-green-500"
-                      : "text-gray-400"
+                    isActive(parcel.delivery_status, "picked_up")
+                      ? "text-blue-600"
+                      : "text-gray-300"
                   }`}
                 />
                 <div
-                  className={`flex-1 h-1 mx-2 ${
-                    parcel.delivery_status === "delivered"
-                      ? "bg-green-500"
+                  className={`h-1 flex-1 mx-2 ${
+                    isActive(parcel.delivery_status, "delivered")
+                      ? "bg-blue-600"
                       : "bg-gray-300"
                   }`}
                 ></div>
@@ -123,44 +161,48 @@ const TrackPackage = () => {
                   className={`text-xl ${
                     parcel.delivery_status === "delivered"
                       ? "text-green-600"
-                      : "text-gray-400"
+                      : "text-gray-300"
                   }`}
                 />
               </div>
 
-              <div className="text-sm text-gray-600 space-y-1">
+              {/* Parcel Details */}
+              <div className="text-sm space-y-1 text-gray-700">
                 <p>
-                  <strong>Sender:</strong> {parcel.senderName} (
-                  {parcel.senderUpazila}, {parcel.senderDistrict})
+                  <strong>Sender:</strong> {parcel.senderName} —{" "}
+                  {parcel.senderUpazila}, {parcel.senderDistrict}
                 </p>
                 <p>
-                  <strong>Receiver:</strong> {parcel.receiverName} (
-                  {parcel.receiverUpazila}, {parcel.receiverDistrict})
+                  <strong>Receiver:</strong> {parcel.receiverName} —{" "}
+                  {parcel.receiverUpazila}, {parcel.receiverDistrict}
                 </p>
                 <p>
                   <strong>Cost:</strong> {parcel.cost}৳
                 </p>
+
                 <p>
                   <strong>Payment:</strong>{" "}
                   <span
                     className={`font-semibold ${
                       parcel.payment_status === "paid"
                         ? "text-green-600"
-                        : "text-red-500"
+                        : "text-red-600"
                     }`}
                   >
                     {parcel.payment_status}
                   </span>
                 </p>
+
                 <p>
-                  Rider Name:{" "}
-                  <span className=" text-gray-950">
-                    {parcel.assigned_rider_name}
-                  </span>
+                  <strong>Rider:</strong>{" "}
+                  {parcel.assigned_rider_name || "Not Assigned"}
                 </p>
+
                 <p>
                   <strong>Assigned:</strong>{" "}
-                  {new Date(parcel.assigned_date).toLocaleString()}
+                  {parcel.assigned_date
+                    ? new Date(parcel.assigned_date).toLocaleString()
+                    : "N/A"}
                 </p>
               </div>
             </motion.div>

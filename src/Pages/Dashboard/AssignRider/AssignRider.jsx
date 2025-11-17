@@ -5,8 +5,12 @@ import { toast } from "react-hot-toast";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../Shared/Loader/Loader";
 import { Helmet } from "@dr.pogodin/react-helmet";
+import useTrackingLogger from "../../../Hooks/useTrackingLogger";
+import useAuth from "../../../Hooks/useAuth";
 
 const AssignRider = () => {
+  const { logTracking } = useTrackingLogger();
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [selectedParcel, setSelectedParcel] = useState(null);
   const [selectedRider, setSelectedRider] = useState("");
@@ -82,8 +86,27 @@ const AssignRider = () => {
         }
       );
 
-      if (res.data.modifiedCount > 0) {
+      if (res?.data?.modifiedCount > 0) {
         toast.success("Rider assigned successfully!");
+        // tracking post here 3
+        await logTracking({
+          trackingId: selectedParcel?.trackingNumber,
+          status: "AssignedToRidder",
+          details: `Assigned to ${riderInfo?.name}`,
+          location: {
+            sender: {
+              region: selectedParcel?.senderRegion,
+              district: selectedParcel?.senderDistrict,
+              upazila: selectedParcel?.senderUpazila,
+            },
+            receiver: {
+              region: selectedParcel?.receiverRegion,
+              district: selectedParcel?.receiverDistrict,
+              upazila: selectedParcel?.receiverUpazila,
+            },
+          },
+          updatedBy: user?.email,
+        });
         refetch();
         document.getElementById("assign_modal").close();
       }

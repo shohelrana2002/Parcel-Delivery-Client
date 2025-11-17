@@ -5,6 +5,7 @@ import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useNavigate } from "react-router";
 import { Helmet } from "@dr.pogodin/react-helmet";
+import useTrackingLogger from "../../Hooks/useTrackingLogger";
 // generate token tracking
 const generateTrackingNumber = () => {
   const now = new Date();
@@ -18,6 +19,7 @@ const generateTrackingNumber = () => {
 const SendParcel = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { logTracking } = useTrackingLogger();
   const {
     register,
     handleSubmit,
@@ -156,7 +158,7 @@ const SendParcel = () => {
       showCancelButton: true,
       cancelButtonText: "Edit Details",
       confirmButtonText: "Pay Now",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         const parcelData = {
           ...data,
@@ -167,9 +169,28 @@ const SendParcel = () => {
           creation_date,
           trackingNumber,
         };
-        axiosSecure.post("/parcels", parcelData).then((res) => {
+        axiosSecure.post("/parcels", parcelData).then(async (res) => {
           if (res.data?.insertedId) {
             Swal.fire("Success!", "Parcel Confirm .", "success");
+            // tracking post here
+            await logTracking({
+              trackingId: trackingNumber,
+              status: "Parcel Created",
+              details: `Created by ${user?.displayName}`,
+              location: {
+                sender: {
+                  region: data?.senderRegion,
+                  district: data?.senderDistrict,
+                  upazila: data?.senderUpazila,
+                },
+                receiver: {
+                  region: data?.receiverRegion,
+                  district: data?.receiverDistrict,
+                  upazila: data?.receiverUpazila,
+                },
+              },
+              updatedBy: user?.email,
+            });
             navigate("/dashboard/myParcels");
           }
         });
@@ -254,13 +275,12 @@ const SendParcel = () => {
             <label className="block font-medium">Name</label>
             <input
               type="text"
+              readOnly
+              defaultValue={user?.displayName}
               placeholder="Enter Sender Name"
-              {...register("senderName", { required: true })}
+              {...register("senderName")}
               className="input input-bordered w-full"
             />
-            {errors.senderName && (
-              <span className="text-red-500">Name required</span>
-            )}
 
             <label className="block font-medium">Contact</label>
             <input

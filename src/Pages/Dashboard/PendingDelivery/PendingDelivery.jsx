@@ -5,8 +5,10 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../Shared/Loader/Loader";
 import Swal from "sweetalert2";
 import { Helmet } from "@dr.pogodin/react-helmet";
+import useTrackingLogger from "../../../Hooks/useTrackingLogger";
 
 const PendingDelivery = () => {
+  const { logTracking } = useTrackingLogger();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
@@ -29,7 +31,7 @@ const PendingDelivery = () => {
   });
 
   // Update delivery status
-  const handleUpdateStatus = async (parcelId, newStatus) => {
+  const handleUpdateStatus = async (parcel, newStatus) => {
     const confirm = await Swal.fire({
       title: `Are you sure?`,
       text: `Mark parcel as "${newStatus}"?`,
@@ -43,12 +45,12 @@ const PendingDelivery = () => {
 
     try {
       const res = await axiosSecure.patch(
-        `/parcels/assign/statusUpdate/${parcelId}`,
+        `/parcels/assign/statusUpdate/${parcel._id}`,
         {
           delivery_status: newStatus,
         }
       );
-
+      console.log(parcel);
       if (res.data?.modifiedCount > 0) {
         Swal.fire({
           title: "Success!",
@@ -57,11 +59,21 @@ const PendingDelivery = () => {
           timer: 1500,
           showConfirmButton: false,
         });
+        let trackDetails = `pick up By ${user.displayName}`;
+        if (newStatus === "delivered") {
+          trackDetails = `Delivered By ${user.displayName}`;
+        }
+        await logTracking({
+          trackingId: parcel?.trackingNumber,
+          status: newStatus,
+          details: trackDetails,
+          updatedBy: user?.email,
+        });
 
         // ✅ Locally update status instantly without refetch
         queryClient.setQueryData(["pendingParcels", user.email], (oldData) =>
           oldData.map((p) =>
-            p._id === parcelId ? { ...p, delivery_status: newStatus } : p
+            p._id === parcel._id ? { ...p, delivery_status: newStatus } : p
           )
         );
       }
@@ -153,9 +165,7 @@ const PendingDelivery = () => {
                     {parcel.delivery_status === "assigned" && (
                       <button
                         className="btn btn-sm bg-yellow-400 hover:bg-yellow-500 text-white"
-                        onClick={() =>
-                          handleUpdateStatus(parcel._id, "picked_up")
-                        }
+                        onClick={() => handleUpdateStatus(parcel, "picked_up")}
                       >
                         Picked Up
                       </button>
@@ -164,9 +174,7 @@ const PendingDelivery = () => {
                     {parcel.delivery_status === "picked_up" && (
                       <button
                         className="btn btn-sm bg-green-500 hover:bg-green-600 text-white"
-                        onClick={() =>
-                          handleUpdateStatus(parcel._id, "delivered")
-                        }
+                        onClick={() => handleUpdateStatus(parcel, "delivered")}
                       >
                         Delivered
                       </button>

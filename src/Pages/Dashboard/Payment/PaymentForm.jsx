@@ -6,8 +6,10 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../Shared/Loader/Loader";
 import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
+import useTrackingLogger from "../../../Hooks/useTrackingLogger";
 
 const PaymentForm = () => {
+  const { logTracking } = useTrackingLogger();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -82,6 +84,13 @@ const PaymentForm = () => {
         const paymentRes = await axiosSecure.post("/payments", paymentData);
         if (paymentRes.data?.insertedId) {
           toast.success(" Payment Successful!");
+          // tracking post here 2
+          await logTracking({
+            trackingId: parcelInfo?.trackingNumber,
+            status: `Payment Success`,
+            details: `Paid By ${user?.displayName}`,
+            updatedBy: `${user?.email}`,
+          });
           navigate("/dashboard/myParcels");
           setLoading(false);
         }
