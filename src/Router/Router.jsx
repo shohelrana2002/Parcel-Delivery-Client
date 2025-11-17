@@ -23,6 +23,7 @@ import AssignRider from "../Pages/Dashboard/AssignRider/AssignRider";
 import PendingDelivery from "../Pages/Dashboard/PendingDelivery/PendingDelivery";
 import CompleteDeliveries from "../Pages/Dashboard/CompleteDeliveries/CompleteDeliveries";
 import MyEarning from "../Pages/Dashboard/MyEarning/MyEarning";
+import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 
 export const router = createBrowserRouter([
   {
@@ -84,7 +85,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <UserProfile />,
+        element: <DashboardHome />,
       },
       {
         path: "myProfile",

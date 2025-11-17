@@ -98,13 +98,6 @@ const DashboardLayout = () => {
           <span>My Earning</span>
         </NavLink>
       </li>
-
-      {/* <li>
-        <NavLink to="riderEarnings" className={linkClass}>
-          <BsClockHistory className="w-5 h-5" />
-          <span>Earnings</span>
-        </NavLink>
-      </li> */}
     </>
   );
 
