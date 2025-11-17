@@ -6,7 +6,7 @@ import { Navigate, useLocation } from "react-router";
 
 const RiderRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  const { role, authLoading } = -useUserRole();
+  const { role, authLoading } = useUserRole();
   const location = useLocation();
   if (loading || authLoading) {
     return <Loader />;
